@@ -1,17 +1,21 @@
 <html>
 
 <head>
+    <!-- CSS (jQuery) -->
     <link rel="stylesheet" href="tagsInputJQ\jquery.tagsinput-revisited.css">
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="css\test.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
 </head>
 
 <body>
-    <input id="example" name="example" type="text">
+    <input id="search" name="search" type="text">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>
     <script src="tagsInputJQ\jquery.tagsinput-revisited.js"></script>
     <script>
-        $('#example').tagsInput({
+        $('#search').tagsInput({
             minChars: 0,
             maxChars: null,
             limit: null,
@@ -19,10 +23,12 @@
             placeholder: 'Enter tag plz',
             'autocomplete': {
                 source: [
-                    'jQuery',
-                    'Script',
-                    'Net',
-                    'Demo'
+                    'C++',
+                    'Java',
+                    'Music',
+                    'Game',
+                    'Remote Friendly',
+                    'Experience Required'
                 ]
             }
         });
