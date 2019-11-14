@@ -18,36 +18,70 @@
 
 <body>
 
-    <nav class="navbar navbar-expand-lg" style="background-color: #FFF5F3">
-        <div class="d-flex flex-row align-items-center">
-            <div class="">
+    <!-- NAV BAR -->
+
+    <nav class="navbar navbar-expand-lg shadow-sm" style="background-color: #FFF5F3">
+        <div class="container-fluid align-items-center">
+            <!-- LOGO -->
+            <div>
                 <a class="navbar-brand" href="#">
                     <img src="img\Logologo.png" width="40" height="40" alt="">
                 </a>
             </div>
 
-            <div class="">
-                <form action="www.google.com">
-                    <div class="d-flex flex-row align-items-center">
-                        <div class="p-2">
-                            <input id="search" name="search" type="text">
-                        </div>
-                        <div class="">
-                            <button class="btn" style="background-color: #EE7674" type="submit">Search</button>
-                        </div>
+            <!-- SEARCH BOX -->
+            <form action="www.google.com">
+                <div class="d-flex flex-row align-items-center ">
+                    <div class="p-2 ">
+                        <input id="search" name="search" type="text">
                     </div>
-                </form>
-            </div>
-
-            <div class="">
-                <div class="d-flex flex-row align-items-center">
-                    <button type="button" class="btn btn-link">Messages</button>
-                    <button type="button" class="btn" style="background-color: #F5C396">Profile</button>
+                    <div class="">
+                        <button class="btn" style="background-color: #EE7674" type="submit">Search</button>
+                    </div>
                 </div>
+            </form>
+
+            <!-- SIDE BUTTONS -->
+            <div class="d-flex flex-row align-items-center">
+                <button type="button" class="btn btn-link" style="color: grey">Messages</button>
+                <button type="button" class="btn" style="background-color: #F5C396">Profile</button>
             </div>
         </div>
     </nav>
 
+    <hr class="divider">
+
+    <!-- RESULT DISPLAY OPTIONS -->
+    <div class="display-setting container align-items-center p-2">
+        <div class="row ">
+            <div class="col-1.5 ">
+                <div class="dropdown">
+                    <button class="btn btn-sm dropdown-toggle" style="background-color:rgba(152, 114, 132, 0.4); color:#4B4237" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Sort by popularity
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item" href="#">Action</a>
+                        <a class="dropdown-item" href="#">Another action</a>
+                        <a class="dropdown-item" href="#">Something else here</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-2">
+                <div class="dropdown">
+                    <button class="btn btn-sm dropdown-toggle" style="background-color:rgba(152, 114, 132, 0.4); color:#4B4237" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        5 reuslts per page
+                        </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item" href="#">Action</a>
+                        <a class="dropdown-item" href="#">Another action</a>
+                        <a class="dropdown-item" href="#">Something else here</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <hr class="divider">
 
     <!-- Optional BS JavaScript -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
@@ -56,6 +90,9 @@
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>
     <script src="tagsInputJQ\jquery.tagsinput-revisited.js"></script>
 
+
+
+    <!-- TAGS INPUT + AUTOCOMPLETE SCRIPT -->
     <script>
         $('#search').tagsInput({
             minChars: 0,
@@ -87,4 +124,4 @@
     </script>
 </body>
 
-</html
+</html>

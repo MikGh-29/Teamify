@@ -13,5 +13,16 @@ ul.ui-autocomplete .ui-menu-item:hover {
 }
 
 .tagsinput {
-    box-shadow: 2px 1px rgba(0, 0, 255, .2);
+    box-shadow: 0 2px 20px 0 rgba(0, 0, 0, 0.1), 0 4px 20px 0 rgba(0, 0, 0, 0.1);
+}
+
+.divider {
+    margin: 0;
+    padding: 0;
+    height: 5px;
+    color: rgba(152, 114, 132, 0.4);
+}
+
+body {
+    background-color: #FFF5F3;
 }
