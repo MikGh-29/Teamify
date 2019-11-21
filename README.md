@@ -7,6 +7,7 @@ CSCI201 Final Project: networking platform that connnects the ones with ideas an
 - Autocomplete and TagsInput finished implementation 
 
 Front-end color guide:
+
 Blue: #75B9BE
 
 Light Pink: #F9F1F0
