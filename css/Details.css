@@ -25,7 +25,3 @@ ul.ui-autocomplete .ui-menu-item:hover {
 body {
     background-color: #FFF5F3;
 }
-
-.seach-result-container {
-    box-shadow: 0 -5px 5px -5px rgba(0, 0, 0, 0.1);
-}
