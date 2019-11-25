@@ -20,13 +20,16 @@ public class Connector {
 		rs = null;
 	}
 	
-	public String createUser(String username, String password) {
+	public String createUser(String username, String password, String email, String type, String desc) {
 		String response = "Success";
-		String cmd = "INSERT INTO Project.Users (Username, Password) VALUES (?, ?);";
+		String cmd = "INSERT INTO Project.Users (Username, Password, Email, UserType, Description) VALUES (?, ?);";
 		try {
 			ps = con.prepareStatement(cmd);
 			ps.setString(1, username);
 			ps.setString(2, password);
+			ps.setString(3, email);
+			ps.setString(4, type);
+			ps.setString(5, desc);
 			ps.executeUpdate();
 		} catch(SQLException e) {
 			response = "User already exists";
@@ -47,7 +50,7 @@ public class Connector {
 			if(rs.next()) temp = rs.getString("Password");
 			if(temp == null) response = "No user has been found";
 			else if(!temp.equals(password)) response = "Incorrect password";
-			else temp = "Success";
+			else response = "Success";
 		} catch(Exception e) {
 			System.out.println(e.getMessage());
 		}
