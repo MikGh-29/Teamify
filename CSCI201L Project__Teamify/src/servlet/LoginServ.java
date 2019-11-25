@@ -41,7 +41,7 @@ public class LoginServ extends HttpServlet {
 		//response.getWriter().append("Served at: ").append(request.getContextPath());
 		String next = "/HomePage.html";
 		Connection con = Request.getSession().getAttribute("Connector");
-		if(temp == null) {
+		if(con == null) {
 			con = new Connection(Credential_String);
 			request.getSession().setAttribute("Connector", con);
 		}
