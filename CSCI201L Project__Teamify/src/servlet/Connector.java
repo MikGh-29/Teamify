@@ -31,7 +31,7 @@ public class Connector {
 			if(rs.next()) temp = rs.getString("Password");
 			if(temp == null) response = "No user has been found";
 			else if(!temp.equals(password)) response = "Incorrect password";
-			else temp = "Success";
+			else response = "Success";
 		} catch(Exception e) {
 			System.out.println(e.getMessage());
 		}
