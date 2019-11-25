@@ -20,6 +20,22 @@ public class Connector {
 		rs = null;
 	}
 	
+	public String createUser(String username, String password) {
+		String response = "Success";
+		String cmd = "INSERT INTO Project.Users (Username, Password) VALUES (?, ?);";
+		try {
+			ps = con.prepareStatement(cmd);
+			ps.setString(1, username);
+			ps.setString(2, password);
+			ps.executeUpdate();
+		} catch(SQLException e) {
+			response = "User already exists";
+		} catch(SQLTimeoutException e) {
+			System.out.println(e.getMessage());
+		}
+		return response;
+	}
+	
 	public String verifyUser(String username, String password) {
 		String response = null;
 		String cmd = "SELECT * FROM Project.Users WHERE Username=?;";
@@ -31,7 +47,7 @@ public class Connector {
 			if(rs.next()) temp = rs.getString("Password");
 			if(temp == null) response = "No user has been found";
 			else if(!temp.equals(password)) response = "Incorrect password";
-			else response = "Success";
+			else temp = "Success";
 		} catch(Exception e) {
 			System.out.println(e.getMessage());
 		}
