@@ -40,9 +40,9 @@ public class LoginServ extends HttpServlet {
 		// TODO Auto-generated method stub
 		//response.getWriter().append("Served at: ").append(request.getContextPath());
 		String next = "/HomePage.html";
-		Connection con = Request.getSession().getAttribute("Connector");
+		Connector con = Request.getSession().getAttribute("Connector");
 		if(con == null) {
-			con = new Connection(Credential_String);
+			con = new Connector(Credential_String);
 			request.getSession().setAttribute("Connector", con);
 		}
 		String name = request.getParameter("name");
