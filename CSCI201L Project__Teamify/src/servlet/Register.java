@@ -33,8 +33,11 @@ public class Register extends HttpServlet {
 		String next = "/HomePage.jsp";
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
+		String email = request.getParameter("email");
+		String type = request.getParameter("userType");
+		String description = request.getParameter("description");
 		Connector con = (Connector)request.getSession().getAttribute("connector");
-		String resp = con.createUser(username, password);
+		String resp = con.createUser(username, password, email, type, description);
 		PrintWriter pw = response.getWriter();
 		if(!resp.contentEquals("Success") {
 			pw.print(resp);
