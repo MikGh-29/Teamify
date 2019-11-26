@@ -40,7 +40,7 @@ public class LoginServ extends HttpServlet {
 		// TODO Auto-generated method stub
 		//response.getWriter().append("Served at: ").append(request.getContextPath());
 		String next = "/HomePage.html";
-		Connector con = Request.getSession().getAttribute("Connector");
+		Connector con = (Connector)request.getSession().getAttribute("Connector");
 		if(con == null) {
 			con = new Connector(Credential_String);
 			request.getSession().setAttribute("Connector", con);
@@ -50,7 +50,7 @@ public class LoginServ extends HttpServlet {
 		PrintWriter out = response.getWriter();
 		if(name == null || password == null || name.trim().length() == 0 || password.trim().length() == 0) {
 			out.print("Please provide all information.");
-			getServletContext.getRequestDispatcher("/Login.html").include(request, response);
+			getServletContext().getRequestDispatcher("/Login.html").include(request, response);
 		}
 		else {
 			String resp = con.verifyUser(name, password);
@@ -62,8 +62,9 @@ public class LoginServ extends HttpServlet {
 			else next = "/Login.html";
 			out.print(resp);
 			out.close();
-			request.getRequestDispatcher(next).include(request, response);
+			getServletContext().getRequestDispatcher(next).include(request, response);
 		}
+	}
 		
 	/*	ArrayList<String> usernames = new ArrayList<String>();
 		ArrayList<String> passwords = new ArrayList<String>();

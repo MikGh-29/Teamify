@@ -1,5 +1,13 @@
+package servlet;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.stream.Collectors;
 
 public class Connector {
 	
@@ -10,8 +18,7 @@ public class Connector {
 	public Connector(String url) {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
-			this.url = url;
-			con = DriverManager.getConnection(this.url);
+			con = DriverManager.getConnection(url);
 		} catch(Exception e) {
 			System.out.println(e.getMessage());
 			e.printStackTrace();
@@ -33,8 +40,6 @@ public class Connector {
 			ps.executeUpdate();
 		} catch(SQLException e) {
 			response = "User already exists";
-		} catch(SQLTimeoutException e) {
-			System.out.println(e.getMessage());
 		}
 		return response;
 	}
@@ -61,7 +66,7 @@ public class Connector {
 		String cmd = "SELECT * FROM Project.Projects WHERE LOWER(ProjectName)=LOWER(?);";
 		List<String> projects = new ArrayList<String>();
 		try {
-			ps = con.prepareStatement();
+			ps = con.prepareStatement(cmd);
 			ps.setString(1, term);
 			rs = ps.executeQuery();
 			while(rs.next()) {
@@ -77,11 +82,11 @@ public class Connector {
 		String cmd = "SELECT * FROM Project.Users WHERE LOWER(Username)=LOWER(?);";
 		List<String> users = new ArrayList<String>();
 		try {
-			ps = con.prepareStatement();
+			ps = con.prepareStatement(cmd);
 			ps.setString(1, term);
 			rs = ps.executeQuery();
 			while(rs.next()) {
-				projects.add(rs.getString("Username"));
+				users.add(rs.getString("Username"));
 			}
 		} catch(Exception e) {
 			System.out.println(e.getMessage());
@@ -89,56 +94,100 @@ public class Connector {
 		return users;
 	}
 	
-	public static <T, E> List<T> getByTag(Class<T> type, Class<E> altType, List<String> tags) {
+	public <T> Map<String, Integer> getByTag(Class<T> type, List<String> tags) {
 		String name = type == Project.class ? "ProjectName" : "Username";
 		String targetName = name.equals("ProjectName") ? "Username" : "ProjectName";
 		String table = name.equals("ProjectName") ? "Projects" : "Users";
-		
 		String cmd = "SELECT t.? FROM Tags t WHERE t.TagName=?;";
-		ps = con.prepareStatement(cmd);
-		Map<String, int> count = new HashMap<String, int>();
-		List<T> target = new ArrayList<T>();
-		for(String tag : tags) {
-			ps.setString(1, name);
-			ps.setString(2, tag);
-			rs = ps.executeQuery();
-			while(rs.next()) {
-				String temp;
-				int curr;
-				try {
-					count.put(temp, count.at(temp)+1);
-				} catch(Exception e) {
-					count.put(temp, 1);
-		}	}	}
-		Map<Integer, String> sorted = 
-			count.entrySet().stream()
+		Map<String, Integer> count = null;
+		try {
+			ps = con.prepareStatement(cmd);
+			count = new HashMap<String, Integer>();
+			for(String tag : tags) {
+				ps.setString(1, name);
+				ps.setString(2, tag);
+				rs = ps.executeQuery();
+				while(rs.next()) {
+					String temp = rs.getString(name);
+					int curr;
+					try {
+						count.put(temp, count.get(temp)+1); 
+					} catch(Exception e) {
+						count.put(temp, 1);
+			}	}	}
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		Map<String, Integer> sorted = 
+			(HashMap<String, Integer>)count.entrySet().stream()
 			.sorted(Entry.comparingByValue())
 			.collect(Collectors.toMap(Entry::getKey, Entry::getValue,
-            (e1, e2) -> e1, LinkedHashMap::new));
+            (e1, e2) -> e1, HashMap::new));
+		return sorted;
+	}
+	
+	public List<User> getUserByTag(List<String> tags) {
+		List<User> target = new ArrayList<User>();
+		Map<String, Integer> sorted = getByTag(Project.class, tags);
+		String cmd = "SELECT * FROM ? WHERE ?=?;";
+		try {
+			ps = con.prepareStatement(cmd);
+			ps.setString(1, "Projects");
+			ps.setString(2, "ProjectName");
+			Iterator<Entry<String, Integer>> it = sorted.entrySet().iterator();
+			while(it.hasNext()) {
+				Map.Entry<String, Integer> me = (Map.Entry<String, Integer>)it.next();
+				ps.setString(3, (String)me.getKey());
+				rs = ps.executeQuery();
+				target.add(new User(rs.getString("ProjectName"), rs.getString("Description")));
+			}
 			
-		cmd = "SELECT * FROM ? WHERE ?=?;";
-		ps = con.prepareStatement();
-		ps.setString(1, table);
-		ps.setString(2, name);
-		Iterator it = sorted.entrySet().iterator();
-		while(it.hasNext()) {
-			Map.Entry me = (Map.Entry)it.next();
-			ps.setString(3, (String)it.getKey());
-			rs = ps.executeQuery();
-			target.add(T.getDeclaredConstructor(String.class, String.class).newInstance(rs.getString("ProjectName"), rs.getString("Description")));
+			cmd = "SELECT * FROM ?.ProjectMembers WHERE ?=?;";
+			ps = con.prepareStatement(cmd);
+			ps.setString(1, "Projects");
+			ps.setString(2, "ProjectName");
+			for(User u : target) {
+				ps.setString(3, u.name);
+				rs = ps.executeQuery();
+				List<String> alt = new ArrayList<String>();
+				while(rs.next()) alt.add(rs.getString("Username"));
+				u.setProject(alt);
+			}
+		} catch(Exception e) {	
+			e.printStackTrace();
 		}
-		
-		cmd = "SELECT * FROM ?.ProjectMembers WHERE ?=?;";
-		ps = con.prepareStatement();
-		ps.setString(1, table);
-		ps.setString(2, name);
-		for(T p : target) {
-			ps.setString(3, p.name);
-			rs = ps.executeQuery();
-			List<String> alt = new ArrayList<String>();
-			while(rs.next()) alt.add(rs.getString(targetName));
-			if(type == Project.class) p.setUsers(alt);
-			else p.setProjects(alt);
+		return target;
+	}
+	
+	public List<Project> getProjectByTag(List<String> tags) {
+		List<Project> target = new ArrayList<Project>();
+		Map<String, Integer> sorted = getByTag(Project.class, tags);
+		String cmd = "SELECT * FROM ? WHERE ?=?;";
+		try {
+			ps = con.prepareStatement(cmd);
+			ps.setString(1, "Users");
+			ps.setString(2, "Username");
+			Iterator<Entry<String, Integer>> it = sorted.entrySet().iterator();
+			while(it.hasNext()) {
+				Map.Entry<String, Integer> me = (Map.Entry<String, Integer>)it.next();
+				ps.setString(3, (String)me.getKey());
+				rs = ps.executeQuery();
+				target.add(new Project(rs.getString("Username"), rs.getString("Description")));
+			}
+			
+			cmd = "SELECT * FROM ?.ProjectMembers WHERE ?=?;";
+			ps = con.prepareStatement(cmd);
+			ps.setString(1, "Projects");
+			ps.setString(2, "ProjectName");
+			for(Project p : target) {
+				ps.setString(3, p.name);
+				rs = ps.executeQuery();
+				List<String> alt = new ArrayList<String>();
+				while(rs.next()) alt.add(rs.getString("Username"));
+				p.setUser(alt);
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
 		}
 		return target;
 	}
