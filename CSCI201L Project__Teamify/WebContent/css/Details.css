@@ -1,0 +1,27 @@
+.ui-widget-content {
+    background: #FEFAF9;
+    color: rgb(95, 95, 95);
+}
+
+ul.ui-autocomplete .ui-menu-item {
+    border: 1px solid #ccc;
+    border-color: rgba(0, 0, 0, 0.2);
+}
+
+ul.ui-autocomplete .ui-menu-item:hover {
+    background: #FEFAF9;
+}
+
+.tagsinput {
+    box-shadow: 0 2px 20px 0 rgba(0, 0, 0, 0.1), 0 4px 20px 0 rgba(0, 0, 0, 0.1);
+}
+
+.divider {
+    margin: 0;
+    padding: 0;
+    color: rgba(152, 114, 132, 0.4);
+}
+
+body {
+    background-color: #FFF5F3;
+}
