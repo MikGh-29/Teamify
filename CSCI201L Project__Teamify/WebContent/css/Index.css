@@ -1,0 +1,36 @@
+    html {
+        font-family: Mplus 1p !important;
+    }
+    
+    body {
+        height: 100vh;
+        background: linear-gradient(150.5deg, #F5C396 -51.78%, #EE7674 128.07%, #EE7674 167.12%) no-repeat;
+    }
+    
+    .main {
+        font-family: Mplus 1p !important;
+        color: #FEFAF9;
+    }
+    
+    .main-text {
+        font-size: 13vh;
+        font-weight: 800;
+    }
+    
+    .second-text {
+        font-size: 3vh;
+    }
+    
+    .organizer {
+        font-weight: 500;
+        color: #FDECE8;
+    }
+    
+    .collaborator {
+        font-weight: 500;
+        color: #FDECE8;
+    }
+    
+    .button:hover {
+        color: grey;
+    }

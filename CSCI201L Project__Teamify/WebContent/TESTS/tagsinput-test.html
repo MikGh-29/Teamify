@@ -1,0 +1,67 @@
+<html>
+
+<head>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="tagsinput\bootstrap-tagsinput.css" type="text/css">
+    <link rel="stylesheet" href="typeahead\typeahead.css" type="text/css">
+
+
+</head>
+
+<body>
+
+    <input type="text" class="tag-system" />
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.20/angular.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script src="typeahead\bloodhound.min.js"></script>
+    <script src="typeahead\typeahead.bundle.min.js"></script>
+    <script src="tagsinput\bootstrap-tagsinput.js"></script>
+    <script src="tagsinput\bootstrap-tagsinput-angular.js"></script>
+
+
+    <script>
+        var cities = new Bloodhound({
+            datumTokenizer: Bloodhound.tokenizers.obj.whitespace('text'),
+            queryTokenizer: Bloodhound.tokenizers.whitespace,
+            prefetch: 'cities.json'
+        });
+        cities.initialize();
+
+        var elt = $('.tag-system');
+        elt.tagsinput({
+            tagClass: function(item) {
+                switch (item.continent) {
+                    case 'Europe':
+                        return 'label label-primary';
+                    case 'America':
+                        return 'label label-danger label-important';
+                    case 'Australia':
+                        return 'label label-success';
+                    case 'Africa':
+                        return 'label label-default';
+                    case 'Asia':
+                        return 'label label-warning';
+                }
+            },
+            itemValue: 'value',
+            itemText: 'text',
+            typeaheadjs: {
+                name: 'cities',
+                displayKey: 'text',
+                source: cities.ttAdapter()
+            }
+        });
+    </script>
+
+
+
+
+</body>
+
+
+
+</html>
