@@ -39,11 +39,10 @@ public class Register extends HttpServlet {
 		Connector con = (Connector)request.getSession().getAttribute("connector");
 		String resp = con.createUser(username, password, email, type, description);
 		PrintWriter pw = response.getWriter();
-		if(!resp.contentEquals("Success") {
+		if(!resp.contentEquals("Success")) {
 			pw.print(resp);
-			next = "/Register.jsp"
+			next = "/Register.jsp";
 		}
 		getServletContext().getRequestDispatcher(next).forward(request, response);
 	}
-
 }
