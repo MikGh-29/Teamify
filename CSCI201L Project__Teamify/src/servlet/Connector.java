@@ -16,6 +16,9 @@ public class Connector {
 	public ResultSet rs;
 	
 	public Connector(String url) {
+		if(url == null || url.trim().length() == 0) {
+			url = "";
+		}
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			con = DriverManager.getConnection(url);
@@ -96,20 +99,16 @@ public class Connector {
 	
 	public <T> Map<String, Integer> getByTag(Class<T> type, List<String> tags) {
 		String name = type == Project.class ? "ProjectName" : "Username";
-		String targetName = name.equals("ProjectName") ? "Username" : "ProjectName";
-		String table = name.equals("ProjectName") ? "Projects" : "Users";
-		String cmd = "SELECT t.? FROM Tags t WHERE t.TagName=?;";
+		String cmd = "SELECT t." + name + " FROM Tags t WHERE t.TagName=?;";
 		Map<String, Integer> count = null;
 		try {
 			ps = con.prepareStatement(cmd);
 			count = new HashMap<String, Integer>();
 			for(String tag : tags) {
-				ps.setString(1, name);
-				ps.setString(2, tag);
+				ps.setString(1, tag);
 				rs = ps.executeQuery();
 				while(rs.next()) {
 					String temp = rs.getString(name);
-					int curr;
 					try {
 						count.put(temp, count.get(temp)+1); 
 					} catch(Exception e) {
@@ -129,28 +128,24 @@ public class Connector {
 	public List<User> getUserByTag(List<String> tags) {
 		List<User> target = new ArrayList<User>();
 		Map<String, Integer> sorted = getByTag(Project.class, tags);
-		String cmd = "SELECT * FROM ? WHERE ?=?;";
+		String cmd = "SELECT * FROM Projects WHERE ProjectName=?;";
 		try {
 			ps = con.prepareStatement(cmd);
-			ps.setString(1, "Projects");
-			ps.setString(2, "ProjectName");
 			Iterator<Entry<String, Integer>> it = sorted.entrySet().iterator();
 			while(it.hasNext()) {
 				Map.Entry<String, Integer> me = (Map.Entry<String, Integer>)it.next();
-				ps.setString(3, (String)me.getKey());
+				ps.setString(1, (String)me.getKey());
 				rs = ps.executeQuery();
 				target.add(new User(rs.getString("ProjectName"), rs.getString("Description")));
 			}
 			
-			cmd = "SELECT * FROM ?.ProjectMembers WHERE ?=?;";
+			cmd = "SELECT * FROM Projects.ProjectMembers WHERE Username=?;";
 			ps = con.prepareStatement(cmd);
-			ps.setString(1, "Projects");
-			ps.setString(2, "ProjectName");
 			for(User u : target) {
-				ps.setString(3, u.name);
+				ps.setString(1, u.name);
 				rs = ps.executeQuery();
 				List<String> alt = new ArrayList<String>();
-				while(rs.next()) alt.add(rs.getString("Username"));
+				while(rs.next()) alt.add(rs.getString("ProjectName"));
 				u.setProject(alt);
 			}
 		} catch(Exception e) {	
@@ -162,11 +157,9 @@ public class Connector {
 	public List<Project> getProjectByTag(List<String> tags) {
 		List<Project> target = new ArrayList<Project>();
 		Map<String, Integer> sorted = getByTag(Project.class, tags);
-		String cmd = "SELECT * FROM ? WHERE ?=?;";
+		String cmd = "SELECT * FROM Users WHERE Username=?;";
 		try {
 			ps = con.prepareStatement(cmd);
-			ps.setString(1, "Users");
-			ps.setString(2, "Username");
 			Iterator<Entry<String, Integer>> it = sorted.entrySet().iterator();
 			while(it.hasNext()) {
 				Map.Entry<String, Integer> me = (Map.Entry<String, Integer>)it.next();
@@ -175,12 +168,10 @@ public class Connector {
 				target.add(new Project(rs.getString("Username"), rs.getString("Description")));
 			}
 			
-			cmd = "SELECT * FROM ?.ProjectMembers WHERE ?=?;";
+			cmd = "SELECT * FROM Projects.ProjectMembers WHERE ProjectName=?;";
 			ps = con.prepareStatement(cmd);
-			ps.setString(1, "Projects");
-			ps.setString(2, "ProjectName");
 			for(Project p : target) {
-				ps.setString(3, p.name);
+				ps.setString(1, p.name);
 				rs = ps.executeQuery();
 				List<String> alt = new ArrayList<String>();
 				while(rs.next()) alt.add(rs.getString("Username"));

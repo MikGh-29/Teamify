@@ -1,7 +1,10 @@
 package servlet;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -27,7 +30,23 @@ public class SearchServ extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+		@SuppressWarnings("unchecked")
+		List<String> tags = (ArrayList<String>)request.getAttribute("Tags");
+		String category = request.getParameter("category");
+		Connector con = (Connector)request.getSession().getAttribute("Connector");
+		if(con == null) {
+			con = new Connector(null);
+			request.getSession().setAttribute("Connector", con);
+		}
+		if(category.contentEquals("user")) {
+			List<User> users = con.getUserByTag(tags);
+			request.setAttribute("userResult", users);
+		}
+		else if(category.contentEquals("user")) {
+			List<Project> projects = con.getProjectByTag(tags);
+			request.setAttribute("projectResult", projects);
+		}
+		getServletContext().getRequestDispatcher("HomePage.html").forward(request, response);
 	}
 
 }
