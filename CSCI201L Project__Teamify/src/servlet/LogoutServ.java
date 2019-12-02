@@ -32,13 +32,13 @@ public class LogoutServ extends HttpServlet {
 		// TODO Auto-generated method stub
 		 response.getWriter().append("Served at: ").append(request.getContextPath());
 		 response.setContentType("text/html");  
-         PrintWriter out=response.getWriter();  
+         PrintWriter out = response.getWriter();  
            
          request.setAttribute("logout", "true");         
            
          HttpSession session=request.getSession(false);  
          session.setAttribute("logout", "false");
-         session.invalidate();            
+         session.invalidate();
          //System.out.println(request.getSession(false));       
          out.print("You are successfully logged out!");  
          
