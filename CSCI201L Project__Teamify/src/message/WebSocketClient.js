@@ -16,7 +16,8 @@ class WebSocketClient {
 	connect() {
 		
 		try {
-			this.webSocket = new WebSocket("ws://" + this.getURL() + "/CSCI201L_Project__Teamify/WebSocketServer/EndPoint");
+			this.webSocket = new WebSocket("ws://" + this.getURL() + 
+					"/CSCI201L_Project__Teamify/WebContent/WebSocketServer/EndPoint");
 			
 			this.webSocket.onopen = function(event) {
 				console.log("On Open: " + JSON.stringify(event));
