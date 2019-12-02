@@ -17,7 +17,9 @@ public class Connector {
 	
 	public Connector(String url) {
 		if(url == null || url.trim().length() == 0) {
-			url = "";
+			url = "jdbc:mysql://google/Project?cloudSqlInstance=white-inscriber-255423:us-central1:sql-db-1"
+					+ "&socketFactory=com.google.cloud.sql.mysql.SocketFactory&useSSL=false&user=scarlett"
+					+ "&password=password";
 		}
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
@@ -61,6 +63,21 @@ public class Connector {
 			else response = "Success";
 		} catch(Exception e) {
 			System.out.println(e.getMessage());
+		}
+		return response;
+	}
+	
+	public String createProject(String name, String description, String url) {
+		String response = "Success";
+		String cmd = "INSERT INTO Project.Projects (ProjectName, Description, Image) VALUES (?, ?, ?);";
+		try {
+			ps = con.prepareStatement(cmd);
+			ps.setString(1, name);
+			ps.setString(2, description);
+			ps.setString(3, url);
+			ps.executeUpdate();
+		} catch(SQLException e) {
+			response = e.getMessage();
 		}
 		return response;
 	}
