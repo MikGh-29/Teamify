@@ -4,6 +4,10 @@ body{
 	padding-top: 10vh;
 }
 
+h3{
+	margin-bottom: 10px;
+}
+
 .form-container{
 	width:250px;
 	height:auto;
@@ -28,8 +32,10 @@ ul.list li input{
 	width:250px;
 	text-align:center;
 	padding: 10px 0px;
+	margin-bottom: 5px;
 }
 
 ul.list li input[type="button"]{
 	backgrouond-color: #75B9BE;
+	width:200px;
 }
