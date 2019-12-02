@@ -39,7 +39,7 @@ public class LoginServ extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		//response.getWriter().append("Served at: ").append(request.getContextPath());
-		String next = "/HomePage.html";
+		String next = "/Profile.html";
 		Connector con = (Connector)request.getSession().getAttribute("Connector");
 		if(con == null) {
 			con = new Connector(Credential_String);

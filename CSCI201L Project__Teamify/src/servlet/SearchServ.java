@@ -46,7 +46,7 @@ public class SearchServ extends HttpServlet {
 			List<Project> projects = con.getProjectByTag(tags);
 			request.setAttribute("projectResult", projects);
 		}
-		getServletContext().getRequestDispatcher("HomePage.html").forward(request, response);
+		getServletContext().getRequestDispatcher("SearchResults.html").forward(request, response);
 	}
 
 }
