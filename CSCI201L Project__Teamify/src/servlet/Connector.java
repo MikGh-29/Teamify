@@ -32,7 +32,7 @@ public class Connector {
 	
 	public String createUser(String username, String password, String email, String type, String desc) {
 		String response = "Success";
-		String cmd = "INSERT INTO Project.Users (Username, Password, Email, UserType, Description) VALUES (?, ?);";
+		String cmd = "INSERT INTO Project.Users (Username, Password, Email, UserType, Description) VALUES (?, ?, ?, ?, ?);";
 		try {
 			ps = con.prepareStatement(cmd);
 			ps.setString(1, username);
