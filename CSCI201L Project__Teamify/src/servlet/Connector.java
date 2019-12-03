@@ -108,16 +108,31 @@ public class Connector {
 	}
 	
 	public List<String> getUserData(String username) {
-		String response = "Success";
-		String cmd = "SELECT * FROM Users WHERE Username=?;";
+		List<String> response = new ArrayList<String>();
+		String cmd = "SELECT * FROM Project.Users WHERE Username=?;";
 		try {
 			ps = con.prepareStatement(cmd);
 			ps.setString(1, username);
 			rs = ps.executeQuery();
-			while(rs.next()) {
-				
+			if(rs.next()) {
+				response.add(rs.getString("Username"));
+				response.add(rs.getString("Email"));
+				response.add(rs.getString("UserType"));
+				response.add(rs.getString("Description"));
 			}
+			cmd = "SELECT * FROM Project.Tags WHERE Username=?;";
+			ps = con.prepareStatement(cmd);
+			ps.setString(1, username);
+			rs = ps.executeQuery();
+			while(rs.next()) {
+				response.add(rs.getString("TagName"));
+			}
+		} catch(Exception e) {
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+			return null;
 		}
+		return response;
 	}
 	
 	public String editUserTag(String username, List<String> newTags, List<String> oldTags) {
