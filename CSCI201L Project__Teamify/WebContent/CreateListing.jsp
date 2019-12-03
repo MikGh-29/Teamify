@@ -1,8 +1,10 @@
-<!doctype html>
-<html lang="en">
-
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
 <head>
-    <!-- Required meta tags -->
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+   <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
@@ -170,9 +172,7 @@ i.material-icons {
 
     <title>Teamify</title>
 </head>
-
 <body>
-
     <!-- NAV BAR -->
 
     <nav class="navbar navbar-expand-lg shadow-sm" style="background-color: #FFF5F3">
@@ -210,7 +210,7 @@ i.material-icons {
 	<div class="project">
 		
 		<!-- PROJECT INFO FORM -->
-		<form action="www.google.com">
+		<form action="www.google.com" method="post">
 			<!-- UPLOAD IMAGE -->
 			<div class="box">
     			<div class="js--image-preview"></div>
@@ -226,9 +226,6 @@ i.material-icons {
                 	<textarea class="form-control" id="description" placeholder="Project Description" rows="8"></textarea>
                     <input id="tags" name="tags" type="text">
                     <button type="submit" class="btn" id="create" style="background-color: #75B9BE; color: #fff; margin: 30px 0px">Create Project</button>
-                </div>
-                <div class="form-buttons">
-                	
                 </div>
             </div>
         </form>
