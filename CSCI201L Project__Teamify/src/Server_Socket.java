@@ -1,3 +1,4 @@
+/*
 package message;
 
 import java.util.HashMap;
@@ -16,8 +17,8 @@ import servlet.Connector;
 
 /**
  * Servlet implementation class WebSocketEndPoint
- */
-@ServerEndpoint("/EndPoint")
+
+@ServerEndpoint(value = "/EndPoint")
 public class WebSocketServer {
 	
 	@SuppressWarnings("unused")	
@@ -73,3 +74,4 @@ public class WebSocketServer {
     	e.printStackTrace();
     }
 }
+*/

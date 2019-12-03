@@ -67,6 +67,22 @@ public class Connector {
 		return response;
 	}
 	
+	public String getUserType(String username) {
+		String response = null;
+		String cmd = "SELECT * FROM Project.User WHERE Username=?;";
+		try {
+			ps = con.prepareStatement(cmd);
+			ps.setString(1, username);
+			rs = ps.executeQuery();
+			if(rs.next()) {
+				response = rs.getString("UserType");
+			}
+		} catch(Exception e) {
+			response = e.getMessage();
+		}
+		return response;
+	}
+	
 	public String createProject(String name, String description, String url, String[] tags) {
 		String response = "Success";
 		String cmd = "INSERT INTO Project.Projects (ProjectName, Description, Image) VALUES (?, ?, ?);";
@@ -197,7 +213,7 @@ public class Connector {
 		return users;
 	}
 	
-	public <T> Map<String, Integer> getByTag(Class<T> type, List<String> tags) {
+	public <T> Map<String, Integer> getByTag(Class<T> type, String[] tags) {
 		String name = type == Project.class ? "ProjectName" : "Username";
 		String cmd = "SELECT t." + name + " FROM Tags t WHERE t.TagName=?;";
 		Map<String, Integer> count = null;
@@ -225,7 +241,7 @@ public class Connector {
 		return sorted;
 	}
 	
-	public List<User> getUserByTag(List<String> tags) {
+	public List<User> getUserByTag(String[] tags) {
 		List<User> target = new ArrayList<User>();
 		Map<String, Integer> sorted = getByTag(Project.class, tags);
 		String cmd = "SELECT * FROM Projects WHERE ProjectName=?;";
@@ -254,7 +270,7 @@ public class Connector {
 		return target;
 	}
 	
-	public List<Project> getProjectByTag(List<String> tags) {
+	public List<Project> getProjectByTag(String[] tags) {
 		List<Project> target = new ArrayList<Project>();
 		Map<String, Integer> sorted = getByTag(Project.class, tags);
 		String cmd = "SELECT * FROM Users WHERE Username=?;";

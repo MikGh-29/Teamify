@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>WebSocket Chat</title>
+		<script>
+			var socket;
+			function connectToServer(){
+				socket = new WebSocket("ws://localhost:9080/WebSocket/chat1");
+				//overloading the onopen function!!!
+				socket.onopen = function(event){
+					document.getElementById("mychat").innerHTML += "Connected!<br />";
+				}
+				
+				//when received a message from server
+				socket.onmessage = function (event){
+					document.getElementById("mychat").innerHTML += event.data + "<br />";
+				}
+				socket.onclose = function(event){
+					document.getElementById("mychat").innerHTML += "Disconnected!<br />";
+				}
+			}
+			function sendMessage(){
+				socket.send("Henry: " + document.chatform.message.value);
+				return false;
+			}
+		</script>
+		
+	</head>
+	<body onload = "connectToServer()">
+		<form name = "chatform" onsubmit = "return sendMessage();">
+			<input type = "text" name = "message"/><br />
+			<input type = "submit" name = "submit" value = "Send Message" />
+		</form>
+		<br />
+		<div id = "mychat"></div>
+	</body>
+</html>

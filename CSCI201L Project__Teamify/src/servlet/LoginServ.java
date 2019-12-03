@@ -39,7 +39,7 @@ public class LoginServ extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		//response.getWriter().append("Served at: ").append(request.getContextPath());
-		String next = "/Profile.html";
+		String next = "/Profile.jsp";
 		Connector con = (Connector)request.getSession().getAttribute("Connector");
 		if(con == null) {
 			con = new Connector(Credential_String);
@@ -50,16 +50,17 @@ public class LoginServ extends HttpServlet {
 		PrintWriter out = response.getWriter();
 		if(name == null || password == null || name.trim().length() == 0 || password.trim().length() == 0) {
 			out.print("Please provide all information.");
-			getServletContext().getRequestDispatcher("/Login.html").include(request, response);
+			getServletContext().getRequestDispatcher("/Login.jsp").include(request, response);
 		}
 		else {
 			String resp = con.verifyUser(name, password);
 			if(resp.contentEquals("Success")) {
 				request.getSession().setAttribute("name", name);
+				request.getSession().setAttribute("userType", con.getUserType(name));
 				request.setAttribute("logout", "false");
 				request.getSession().setAttribute("logout", "false");
 			}
-			else next = "/Login.html";
+			else next = "/Login.jsp";
 			out.print(resp);
 			out.close();
 			getServletContext().getRequestDispatcher(next).include(request, response);
