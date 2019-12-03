@@ -262,7 +262,7 @@ public class Connector {
 				Map.Entry<String, Integer> me = (Map.Entry<String, Integer>)it.next();
 				ps.setString(3, (String)me.getKey());
 				rs = ps.executeQuery();
-				target.add(new Project(rs.getString("Username"), rs.getString("Description")));
+				target.add(new Project(rs.getString("Username"), rs.getString("Description"), rs.getString("Image")));
 			}
 			
 			cmd = "SELECT * FROM Projects.ProjectMembers WHERE ProjectName=?;";
