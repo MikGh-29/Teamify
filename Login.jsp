@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ page import="servlet.*" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -9,12 +10,13 @@
 </head>
 <body>
 <div class="form-container">
-	<ul class="list">
-		<li><h3>Teamify Login</h3></li>
-		<li><input type="text" name="User Name" placeholder="User Name">
-		<li><input type="text" name="Password" placeholder="Password">
-		<li><input type="button" name="Submit" value="Login" style="background-color: #75B9BE; color: #fff; margin: 30px 0px"></button></li>
-	</ul>
+	<form class="list" method="GET" action="LoginServ" >
+		<h3>Teamify Login</h3>
+		<input type="text" name="name" placeholder="User Name">
+		<input type="text" name="password" placeholder="Password">
+		
+		<button value="Login" style="background-color: #75B9BE; color: #fff; margin: 30px 0px">Login </button>
+	</form>
 </div>
 </body>
 </html>
