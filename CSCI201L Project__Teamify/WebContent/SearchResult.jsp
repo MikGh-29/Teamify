@@ -23,6 +23,16 @@
 <link rel="stylesheet" href="css\Details.css">
 
 <title>Teamify</title>
+
+<script>
+	function createProject() {
+		window.location = 'CreateListing.jsp';
+	}
+	
+	function goToProfile() {
+		window.location = 'Profile.jsp';
+	}
+</script>
 </head>
 
 <body>
@@ -54,9 +64,9 @@
 
 			<!-- SIDE BUTTONS -->
 			<div class="d-flex flex-row align-items-center">
-				<button type="button" class="btn btn-link mr-2" style="color: grey">Messages</button>
+				<button type="button" class="btn btn-link mr-2" style="color: grey" onclick="createProject()">Create Project</button>
 				<button type="button" class="btn ml-4 profile"
-					style="background-color: #F5C396">Profile</button>
+					style="background-color: #F5C396" onclick="goToProfile()">Profile</button>
 			</div>
 		</div>
 	</nav>
@@ -106,16 +116,14 @@
 				<div class="card shadow-lg mb-3" style="max-width: 70%;">
 					<div class="row no-gutters position-relative">
 						<div class="col-md-4 p-4 ">
-							<img src="img\lightbulb.png" class="card-img" alt="...">
+							<img src="img\lightbulb%20(1).png" class="card-img" alt="...">
 						</div>
 						<div class="col-md-8 mt-3 position-static">
 							<div class="card-body">
 								<a class="stretched-link" href="Details.html">
 									<h5 class="card-title">Game Startup Idea</h5>
 								</a>
-								<p class="card-text">This is a wider card with supporting
-									text below as a natural lead-in to additional content. This
-									content is a little bit longer.</p>
+								<p class="card-text">We want to build a startup that charges people for premium all-inclusivve gaming expeirence at home.</p>
 								<p class="card-text">
 									<small class="text-muted">Organized by Xiao Ming</small>
 								</p>
@@ -136,9 +144,118 @@
 					</div>
 				</div>
 			</div>
+			<%
+				String type = session.getAttribute("type").toString();
+			%>
+
+			<%
+				if (type.equalsIgnoreCase("contributor")) {
+					System.out.println("In contributor");
+					List<Project> resultList = (List<Project>) request.getAttribute("projectResult");
+					if (resultList == null || resultList.size() == 0) {
+						System.out.println("Empty list");
+					} else {
+						System.out.println("Good project list");
+						System.out.println(resultList.size());
+					}
+
+					for (int i = 0; i < resultList.size(); i++) {
+			%>
+			<div class="row">
+				<div class="card shadow-lg mb-3" style="max-width: 70%;">
+					<div class="row no-gutters position-relative">
+						<div class="col-md-4 p-4 ">
+							<img src="img\lightbulb%20(1).png" class="card-img" alt="...">
+						</div>
+						<div class="col-md-8 mt-3 position-static">
+							<div class="card-body">
+								<a class="stretched-link" href="Details.html">
+									<h5 class="card-title"><%=resultList.get(i).name%></h5>
+								</a>
+								<p class="card-text"><%=resultList.get(i).description%></p>
+								<p class="card-text">
+									<small class="text-muted">Organized by Xiao Ming</small>
+								</p>
+							</div>
+							<div class="row pl-3 mt-2">
+								<div class="pb-4 pl-1 ml-3">
+									<button type="button" class="btn" data-toggle="modal"
+										data-target="#messageModal"
+										style="color: #F9F1F0; background-color: #F5C396">Customize
+										Invite</button>
+								</div>
+								<div class="pb-4 pl-1 ml-3">
+									<button type="button" class="btn"
+										style="color: #F9F1F0; background-color: #EE7674">Interested!</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+	<%
+		}
+		} else if (type.equalsIgnoreCase("organizer")) {
+			System.out.println("In user");
+			List<User> users = (List<User>) request.getAttribute("userResult");
+			if (users == null) {
+				System.out.println("Empty user list");
+			} else {
+				System.out.println("Good user list");
+				System.out.println("User num " + users.size());
+
+			}
+
+			for (int i = 0; i < users.size(); i++) {
+	%>
+
+	<div class="row">
+		<div class="card shadow-lg mb-3" style="max-width: 70%;">
+			<div class="col-md-4 p-4 ">
+				<img src="img\lightbulb.png" class="card-img" alt="" />
+			</div>
+			<div class="col-md-8 mt-3 position-static">
+				<div class="card-body">
+					<a class="stretched-link" href="Details.html">
+						<h5 class="card-title">
+							<%=users.get(i).name%>
+						</h5>
+					</a>
+					<p class="card-text">
+						<%=users.get(i).description%>
+					</p>
+				</div>
+				<div class="row pl-3 mt-2">
+					<div class="pb-4 pl-1 ml-3">
+						<button type="button" class="btn" data-toggle="modal"
+							data-target="#messageModal"
+							style="color: #F9F1F0; background-color: #F5C396">Customize
+							Invite</button>
+					</div>
+					<div class="pb-4 pl-1 ml-3">
+						<button type="button" class="btn"
+							style="color: #F9F1F0; background-color: #EE7674">Interested!</button>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
+	</div>
+	</div>
+	<%
+		}
+		}
+	%>
 
+	</div>
+	</div>
+	
+	
+	<!-- <div class="position-fixed">
+	HIIIIIII
+		<i class="fas fa-plus-circle fa-2x" style="color: #F5C396"></i>
+	</div>
+ -->
 	<!-- MODAL -->
 
 	<div class="modal fade" id="messageModal" tabindex="-1" role="dialog"
@@ -168,7 +285,7 @@
 					<button type="button" class="btn"
 						style="color: #F9F1F0; background-color: rgba(152, 114, 132, 0.4); color: grey"
 						data-dismiss="modal">Close</button>
-					<button type="button" class="btn"
+					<button type="button" class="btn" data-dismiss="modal"
 						style="color: #F9F1F0; background-color: #EE7674">Send
 						message</button>
 				</div>
@@ -191,77 +308,8 @@
 		integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
 		crossorigin=" anonymous "></script>
 	<script src="tagsInputJQ\jquery.tagsinput-revisited.js "></script>
+	<script src="https://kit.fontawesome.com/f930095f9b.js" crossorigin="anonymous"></script>
 
-	
-		<%String type = session.getAttribute("type").toString();%>
-
-		<%if (type.equalsIgnoreCase("contributor")) {
-			System.out.println("In contributor");
-			List<Project> resultList = (List<Project>)request.getAttribute("projectResult");
-			if (resultList == null || resultList.size() == 0) {
-				System.out.println("Empty list");
-			}
-			else {
-				System.out.println("Good project list");
-				System.out.println(resultList.size());
-			}
-			
-			for (int i = 0; i < resultList.size(); i++) {
-				%>
-				<script>
-				alert('HI');
-				$("#results")
-						.append(
-								'<div class="row"><div class="card shadow-lg mb-3" style="max-width: 70%;">'
-										+ '<div class="col-md-4 p-4 ">'
-										+ '<img src="img\lightbulb.png" class="card-img" alt=""/>'
-										+ '</div><div class="col-md-8 mt-3 position-static">'
-										+ '<div class="card-body">'
-										+ '<a class="stretched-link" href="Details.html">'
-										+ '<h5 class="card-title">'
-										+ <%=resultList.get(i).name%>
-										+ '</h5></a><p class="card-text">'
-										+ <%=resultList.get(i).description%>
-										+ '</p></div><div class="row pl-3 mt-2"><div class="pb-4 pl-1 ml-3">'
-										+ '<button type="button" class="btn" data-toggle="modal" data-target="#messageModal" style="color:#F9F1F0; background-color:#F5C396">Customize Invite</button>'
-										+ '</div><div class="pb-4 pl-1 ml-3">'
-										+ '<button type="button" class="btn" style="color:#F9F1F0; background-color:#EE7674">Interested!</button>'
-										+ '</div></div></div></div></div></div></div>');
-				</script>
-			<%}
-			}
-		else if (type.equalsIgnoreCase("organizer")){ 
-			System.out.println("In user");
-			List<User> users = (List<User>)request.getAttribute("userResult");
-			if (users == null) {
-				System.out.println("Empty user list");
-			}
-			else {
-				System.out.println("Good user list");
-				System.out.println("User num " + users.size());
-
-			}
-		
-			for (int i = 0; i < users.size(); i++) { %>
-				$("#results")
-						.append(
-								'<div class="row"><div class="card shadow-lg mb-3" style="max-width: 70%;">'
-										+ '<div class="col-md-4 p-4 ">'
-										+ '<img src="img\lightbulb.png" class="card-img" alt=""/>'
-										+ '</div><div class="col-md-8 mt-3 position-static">'
-										+ '<div class="card-body">'
-										+ '<a class="stretched-link" href="Details.html">'
-										+ '<h5 class="card-title">'
-										+ <%=users.get(i).name%>
-										+ '</h5></a><p class="card-text">'
-										+ <%=users.get(i).description%>
-										+ '</p>/div><div class="row pl-3 mt-2"><div class="pb-4 pl-1 ml-3">'
-										+ '<button type="button" class="btn" data-toggle="modal" data-target="#messageModal" style="color:#F9F1F0; background-color:#F5C396">Customize Invite</button>'
-										+ '</div><div class="pb-4 pl-1 ml-3">'
-										+ '<button type="button" class="btn" style="color:#F9F1F0; background-color:#EE7674">Interested!</button>'
-										+ '</div></div></div></div></div></div></div>');
-				<%}
-			}%>
 
 
 	<!-- TAGS INPUT + AUTOCOMPLETE SCRIPT -->
