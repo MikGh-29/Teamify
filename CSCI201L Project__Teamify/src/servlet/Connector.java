@@ -107,26 +107,29 @@ public class Connector {
 		return response;
 	}
 	
-	public List<String> getUserData(String username) {
-		List<String> response = new ArrayList<String>();
+	public User getUserData(String username) {
+		User response = new User();
 		String cmd = "SELECT * FROM Project.Users WHERE Username=?;";
 		try {
 			ps = con.prepareStatement(cmd);
 			ps.setString(1, username);
 			rs = ps.executeQuery();
 			if(rs.next()) {
-				response.add(rs.getString("Username"));
-				response.add(rs.getString("Email"));
-				response.add(rs.getString("UserType"));
-				response.add(rs.getString("Description"));
+				response.name = rs.getString("Username");
+				response.description = rs.getString("Description");
+				response.userType = rs.getString("UserType");
+				response.email = rs.getString("Email");
+				
 			}
 			cmd = "SELECT * FROM Project.Tags WHERE Username=?;";
 			ps = con.prepareStatement(cmd);
 			ps.setString(1, username);
 			rs = ps.executeQuery();
+			List<String> temp = new ArrayList<String>();
 			while(rs.next()) {
-				response.add(rs.getString("TagName"));
+				temp.add(rs.getString("TagName"));
 			}
+			response.tags = temp;
 		} catch(Exception e) {
 			System.out.println(e.getMessage());
 			e.printStackTrace();
@@ -243,7 +246,7 @@ public class Connector {
 				rs = ps.executeQuery();
 				List<String> alt = new ArrayList<String>();
 				while(rs.next()) alt.add(rs.getString("ProjectName"));
-				u.setProject(alt);
+				u.projects = alt;
 			}
 		} catch(Exception e) {	
 			e.printStackTrace();

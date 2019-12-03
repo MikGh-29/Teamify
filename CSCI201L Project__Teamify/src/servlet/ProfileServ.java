@@ -31,6 +31,7 @@ public class ProfileServ extends HttpServlet {
 		Connector con = (Connector)request.getSession().getAttribute("Connector");
 		String name = (String)request.getSession().getAttribute("name");
 		List<String> info = con.getUserData(name);
+		
 	}
 
 }
