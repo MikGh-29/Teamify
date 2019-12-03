@@ -38,8 +38,9 @@ public class CreateProject extends HttpServlet {
 		String name = request.getParameter("name");
 		String description = request.getParameter("description");
 		String url = request.getParameter("url");
+		String[] tags = (String[])request.getAttribute("Tags");
 		Connector con = (Connector)request.getSession().getAttribute("connector");
-		String resp = con.createProject(name, description, url);
+		String resp = con.createProject(name, description, url, tags);
 		PrintWriter pw = response.getWriter();
 		if(!resp.contentEquals("Success")){
 			pw.print(resp);
