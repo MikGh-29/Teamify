@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="tagsInputJQ\jquery.tagsinput-revisited.css">
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <link rel="stylesheet" href="css\test.css">
+    <link rel="stylesheet" href="css\Details.css">
 
 	<!-- Profile Display CSS -->
 <style class="cp-pen-styles">@import url(https://fonts.googleapis.com/icon?family=Material+Icons);
@@ -42,14 +43,14 @@
   width: 100%;
   position: relative;
   overflow: hidden;
-  background-image: url("");
+  background-image: url("img/profile.jpg");
   background-color: white;
   background-position: center center;
   background-repeat: no-repeat;
   background-size: cover;
 }
 
-#username, #email, #description {
+#username, #tags, #email, #description {
   margin: 20px 200px;
 }
 .profile-info {
@@ -66,8 +67,7 @@
 	<% ArrayList<String> t = new ArrayList<String>();
 	t.add("1");
 	t.add("2");
-	session.setAttribute("Tags", t); 
-	session.setAttribute("userType", "a");%>
+	session.setAttribute("Tags", t); %>
     <nav class="navbar navbar-expand-lg shadow-sm" style="background-color: #FFF5F3">
         <div class="container-fluid align-items-center">
             <!-- LOGO -->
@@ -133,8 +133,10 @@
     <hr class="divider">
     
     <!-- PROJECT LISTINGS -->
-    <div id="project-listing"></div>
-
+    <div style="margin: 0px 300px;">
+    <div class="container-fluid seach-result-container"><div class="container pt-4" id="project-listing"></div></div>
+	</div>
+	
     <!-- Optional BS JavaScript -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
@@ -144,13 +146,19 @@
 
 	<!-- PROJECT LISTING SCRIPT -->
 	<script>
-		var type = <%= session.getAttribute("userType").toString()%>;
-		if (type == "organizer"){
-			var projects = <%= session.getAttribute("projects")%>;
-			for (int i = 0; i < type.size(); i++) {
-				$("#project-listing").append(projects.get(i));
+			for (i = 0; i < 3; i++) {
+				$("#project-listing").append('<div class="row"><div class="card shadow-lg mb-3" style="max-width: 70%;">'
+						+ '<div class="col-md-4 p-4 ">' + '<img src="img\lightbulb (1).png" class="card-img" alt=""/>'
+						+ '</div><div class="col-md-8 mt-3 position-static">' + '<div class="card-body">'
+						+ '<a class="stretched-link" href="Details.html">' + '<h5 class="card-title">'
+						+ 'name' + '</h5></a><p class="card-text">' + 'descriptions are supposed to be very long like this and even longer to go across several lines'
+						+ '</p><p class="card-text"><small class="text-muted">' + 'tags,tags,tags'
+						+ '</p></div><div class="row pl-3 mt-2"><div class="pb-4 pl-1 ml-3">'
+						+ '<button type="button" class="btn" data-toggle="modal" data-target="#messageModal" style="color:#F9F1F0; background-color:#F5C396">Customize Invite</button>'
+						+ '</div><div class="pb-4 pl-1 ml-3">'
+						+ '<button type="button" class="btn" style="color:#F9F1F0; background-color:#EE7674">Interested!</button>'
+						+ '</div></div></div></div></div></div></div>');
 			}
-		}
 	</script>
 
     <!-- TAGS INPUT + AUTOCOMPLETE SCRIPT -->
