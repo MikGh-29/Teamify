@@ -67,7 +67,7 @@ public class Connector {
 		return response;
 	}
 	
-	public String createProject(String name, String description, String url) {
+	public String createProject(String name, String description, String url, String[] tags) {
 		String response = "Success";
 		String cmd = "INSERT INTO Project.Projects (ProjectName, Description, Image) VALUES (?, ?, ?);";
 		try {
@@ -77,6 +77,71 @@ public class Connector {
 			ps.setString(3, url);
 			ps.executeUpdate();
 		} catch(SQLException e) {
+			response = e.getMessage();
+		}
+		cmd = "INSERT INTO Project.Tags (TagName, ProjectName) VALUES (?, ?);";
+		try {
+			ps = con.prepareStatement(cmd);
+			ps.setString(2, name);
+			for(String tag : tags) {
+				ps.setString(1, tag);
+				ps.executeUpdate();
+			}
+		} catch(Exception e) {
+			response = e.getMessage();
+		}
+		return response;
+	}
+	
+	public String addUserToProject(String username, String projectName) {
+		String response = "Success";
+		String cmd = "INSERT INTO Project.ProjectMembers (ProjectName, Username) VALUES (?, ?);";
+		try {
+			ps = con.prepareStatement(cmd);
+			ps.setString(1, projectName);
+			ps.setString(2, username);
+			ps.executeUpdate();
+		} catch(Exception e) {
+			response = e.getMessage();
+		}
+		return response;
+	}
+	
+	public List<String> getUserData(String username) {
+		String response = "Success";
+		String cmd = "SELECT * FROM Users WHERE Username=?;";
+		try {
+			ps = con.prepareStatement(cmd);
+			ps.setString(1, username);
+			rs = ps.executeQuery();
+			while(rs.next()) {
+				
+			}
+		}
+	}
+	
+	public String editUserTag(String username, List<String> newTags, List<String> oldTags) {
+		String response = "Success";
+		String cmd = "INSERT INTO Project.Tags (TagName, Username) VALUES (?, ?);";
+		try {
+			ps = con.prepareStatement(cmd);
+			ps.setString(2, username);
+			if(newTags != null) {
+				for(String tag : newTags) {
+					ps.setString(1, tag);
+					ps.executeUpdate();
+				}
+			}
+			cmd = "REMOVE FROM Project.Tags WHERE TagName=? AND Username=?;";
+			ps = con.prepareStatement(cmd);
+			ps.setString(2, username);
+			if(oldTags != null) {
+				for(String tag : oldTags) {
+					ps.setString(1, tag);
+					ps.executeUpdate();
+				}
+			}
+		} catch(Exception e) {
 			response = e.getMessage();
 		}
 		return response;
