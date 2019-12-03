@@ -17,7 +17,7 @@ class WebSocketClient {
 		
 		try {
 			this.webSocket = new WebSocket("ws://" + this.getURL() + 
-					"/message/WebSocketServer/EndPoint");
+					"/WebSocket/EndPoint");
 			
 			this.webSocket.onopen = function(event) {
 				console.log("On Open: " + JSON.stringify(event));

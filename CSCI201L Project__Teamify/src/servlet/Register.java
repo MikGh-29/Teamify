@@ -37,6 +37,7 @@ public class Register extends HttpServlet {
 		String type = request.getParameter("userType");
 		String description = request.getParameter("description");
 		Connector con = (Connector)request.getSession().getAttribute("connector");
+		if(con == null) con = new Connector(null);
 		String resp = con.createUser(username, password, email, type, description);
 		PrintWriter pw = response.getWriter();
 		if(!resp.contentEquals("Success")) {

@@ -30,8 +30,9 @@ public class ProfileServ extends HttpServlet {
 	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Connector con = (Connector)request.getSession().getAttribute("Connector");
 		String name = (String)request.getSession().getAttribute("name");
-		List<String> info = con.getUserData(name);
-		
+		User info = con.getUserData(name);
+		request.setAttribute("userInfo", info);
+		getServletContext().getRequestDispatcher("Profile.jsp").forward(request, response);
 	}
 
 }

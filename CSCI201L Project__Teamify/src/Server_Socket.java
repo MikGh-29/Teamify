@@ -18,7 +18,7 @@ import servlet.Connector;
 /**
  * Servlet implementation class WebSocketEndPoint
 
-@ServerEndpoint(value = "/EndPoint")
+@ServerEndpoint(value = "/")
 public class WebSocketServer {
 	
 	@SuppressWarnings("unused")	

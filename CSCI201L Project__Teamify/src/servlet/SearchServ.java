@@ -28,8 +28,8 @@ public class SearchServ extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String[] tags = request.getParameter("search").split(",");
-		String category = request.getParameter("category");
+		String[] tags = request.getParameterValues("json[]");
+		String category = (String)request.getAttribute("category");
 		Connector con = (Connector)request.getSession().getAttribute("Connector");
 		if(con == null) {
 			con = new Connector(null);
